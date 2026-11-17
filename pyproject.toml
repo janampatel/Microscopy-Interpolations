@@ -1,0 +1,75 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "microinterp"
+version = "0.1.0"
+description = "Microscopy frame interpolation with selectable backends (RIFE, FILM, CDFI, LDMVFI)"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+authors = [{ name = "Janam Patel" }, { name = "Daniel Gartner" }, { name = "Orlando Arguello-Miranda" }]
+license = "MIT"
+license-files = ["LICENSE", "licenses/*", "NOTICE.md"]
+keywords = ["frame-interpolation", "microscopy", "RIFE", "FILM", "CDFI", "LDMVFI"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Image Processing",
+]
+# numpy<2 for torch 2.1/2.2 and cupy<14; it has no wheels for Python 3.13+, hence the cap above.
+dependencies = [
+    "torch",
+    "numpy<2",
+    "tifffile<2025",
+    "scipy<1.14",
+    "Pillow",
+    "scikit-image<0.25",
+    "matplotlib",
+    "tqdm",
+    "PySide6",
+    "pyqtgraph",
+    "gdown",
+]
+
+[project.optional-dependencies]
+# LDMVFI deps; `microinterp setup` installs these plus the matching cupy
+gpu = [
+    "pytorch-lightning==1.9.5",
+    "omegaconf==2.2.3",
+    "einops==0.6.1",
+    "kornia==0.6.12",
+    "transformers>=4.36,<4.46",
+    "timm",
+    "imageio",
+    "imageio-ffmpeg",
+    "ftfy",
+    "regex",
+    "setuptools<81",
+]
+
+[project.urls]
+Homepage = "https://github.com/janampatel/Microscopy-Interpolations"
+Repository = "https://github.com/janampatel/Microscopy-Interpolations"
+Issues = "https://github.com/janampatel/Microscopy-Interpolations/issues"
+
+[project.scripts]
+microinterp = "microinterp.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["microinterp*"]
+
+[tool.setuptools.package-data]
+# FILM, CDFI and LDMVFI weights are downloaded on first use, not shipped
+"microinterp.backends.rife" = ["*.pkl"]
+"microinterp.backends.ldmvfi" = ["*.yaml"]
+"microinterp" = ["data/toy_dataset/*.tif"]
+
+[tool.setuptools.exclude-package-data]
+"microinterp.backends.film" = ["*.pt"]

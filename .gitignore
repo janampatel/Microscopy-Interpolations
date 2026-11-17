@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Cloned engine sources (see the README)
+/LDMVFI/
+/CLIP/
+/taming-transformers/
+
+# Large checkpoints (downloaded or placed by hand)
+/checkpoints/
+
+# Scratch / output folders
+/cmp/
+/comparison_out/
+/interp_out/
+/out_film/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
